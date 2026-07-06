@@ -2745,11 +2745,13 @@ void _glfwRestoreWindowWayland(_GLFWwindow* window)
 
         if (window->wl.maximized)
         {
-            if (window->wl.libdecor.frame)
+            if (window->wl.libdecor.frame) {
                 libdecor_frame_unset_maximized(window->wl.libdecor.frame);
-            else if (window->wl.xdg.toplevel)
+                libdecor_frame_unset_fullscreen(window->wl.libdecor.frame);
+            } else if (window->wl.xdg.toplevel) {
                 xdg_toplevel_unset_maximized(window->wl.xdg.toplevel);
-            else
+                xdg_toplevel_unset_fullscreen(window->wl.xdg.toplevel);
+            } else
                 window->wl.maximized = GLFW_FALSE;
         }
     }
@@ -2757,11 +2759,13 @@ void _glfwRestoreWindowWayland(_GLFWwindow* window)
 
 void _glfwMaximizeWindowWayland(_GLFWwindow* window)
 {
-    if (window->wl.libdecor.frame)
+    if (window->wl.libdecor.frame) {
         libdecor_frame_set_maximized(window->wl.libdecor.frame);
-    else if (window->wl.xdg.toplevel)
+        libdecor_frame_set_fullscreen(window->wl.libdecor.frame, NULL);
+    } else if (window->wl.xdg.toplevel) {
         xdg_toplevel_set_maximized(window->wl.xdg.toplevel);
-    else
+        xdg_toplevel_set_fullscreen(window->wl.xdg.toplevel, NULL);
+    } else
         window->wl.maximized = GLFW_TRUE;
 }
 
